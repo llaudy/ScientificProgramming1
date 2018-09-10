@@ -1,3 +1,3 @@
 # ScientificProgramming1
 MSB1015 Scientific Programming
-Assignment 1
+Assignment 1: Server-Client Interaction
