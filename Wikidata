@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> THRB </title> 
+	  <script src="https://cdn.rawgit.com/maxlath/wikidata-sdk/master/dist/wikidata-sdk.js"></script>
+</head>
+<body>
+    <h3>List of drugs targeting THRB-encoded protein obtained from Wikidata</h3>
+  <pre id="output"></pre>
+  <script type="text/javascript">
+  
+	const gene = "THRB";
+	const sparql = `
+		PREFIX wd: <http://www.wikidata.org/entity/>
+		PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+		SELECT DISTINCT ?drug_id ?drug_label WHERE {
+			?gene_id rdfs:label '${gene}'@en .
+			?gene_id wdt:P688 ?gene_product .
+			?gene_product wdt:P352 ?uniprot_id .
+			?drug_id wdt:P129 ?gene_product .
+			?drug_id rdfs:label ?drug_label .
+				FILTER(LANG(?drug_label) = "en").
+        }`;
+	
+    fetch(
+        wdk.sparqlQuery(sparql)
+		).then( response => response.json()
+		).then( wdk.simplify.sparqlResults
+		).then(
+			function (response) {
+				document.getElementById('output').innerHTML =
+				JSON.stringify(response, undefined, 2);
+			}
+		)				
+  </script>
+</body>
+</html>
